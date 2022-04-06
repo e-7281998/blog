@@ -8,6 +8,8 @@ import bodyParser from 'koa-bodyparser';
 import mongoose from 'mongoose';
 import api from './api/index.js';
 
+import jwtMiddleware from './lib/jwtMiddleware.js';
+
 // import createFakeData from './createFakeData.js';
 
 const { PORT, MONGO_URI } = process.env;
@@ -31,6 +33,7 @@ router.use('/api', api.routes());  //api 라우트 적용
 
 //라우터 적용 전에 bodyparser 적용
 app.use(bodyParser());
+app.use(jwtMiddleware)
 
 //app 인스턴스에 라우터 적용
 app.use(router.routes()).use(router.allowedMethods());
