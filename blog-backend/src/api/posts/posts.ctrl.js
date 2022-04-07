@@ -4,11 +4,34 @@ import Joi from 'joi';
 
 const { ObjectId } = mongoose.Types;
 
-export const checkObjectId = (ctx, next) => {
+export const checkOwnPost = async (ctx, next) => {
+    const { user } = ctx.state;
+    const { id } = ctx.params;
+    const post = await Post.findById(id).exec();
+    if (post.user._id.toString() !== user._id) {
+        ctx.status = 403;
+        return;
+    }
+    return next();
+}
+
+export const getPostById = async (ctx, next) => {
     const { id } = ctx.params;
     if (!ObjectId.isValid(id)) {
-        ctx.status = 404;   //bad request
+        ctx.status = 400;   //bad request
         return;
+    }
+    try {
+        const post = await Post.findById(id);
+        //포스트가 존재하지 않을 때
+        if (!post) {
+            ctx.status = 404;   //not found
+            return;
+        }
+        ctx.state.post = post;
+        return next();
+    } catch (e) {
+        ctx.throw(500, e);
     }
     return next();
 }
@@ -30,10 +53,12 @@ export const write = async ctx => {
     }
 
     const { title, body, tags } = ctx.request.body;
+    // console.log(ctx.state);
     const post = new Post({
         title,
         body,
         tags,
+        user: ctx.state.user,
     });
     try {
         await post.save();
@@ -69,17 +94,7 @@ export const list = async ctx => {
     }
 };
 export const read = async ctx => {
-    const { id } = ctx.params;
-    try {
-        const post = await Post.findById(id).exec();
-        if (!post) {
-            ctx.status = 404;
-            return;
-        }
-        ctx.body = post;
-    } catch (e) {
-        ctx.throw(500, 5);
-    }
+    ctx.body = ctx.state.post;
 };
 export const remove = async ctx => {
     const { id } = ctx.params;
@@ -91,14 +106,14 @@ export const remove = async ctx => {
     }
 };
 
-// export const deleteAll = async ctx => {
-//     try {
-//         await Post.remove({});
-//         ctx.status = 204;   //no content : 성공했지만 응답할 데이터는 없음
-//     } catch (e) {
-//         ctx.throw(500, e);
-//     }
-// };
+export const deleteAll = async ctx => {
+    try {
+        await Post.remove({});
+        ctx.status = 204;   //no content : 성공했지만 응답할 데이터는 없음
+    } catch (e) {
+        ctx.throw(500, e);
+    }
+};
 
 export const update = async ctx => {
     const { id } = ctx.params;

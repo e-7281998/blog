@@ -8,7 +8,7 @@ import User from '../../models/user.js';
         password: 'mypass123',
     }
 */
-/*
+
 export const all = async ctx => {
     try {
         const users = await User.find().exec();
@@ -19,8 +19,15 @@ export const all = async ctx => {
     } catch (e) {
         console.log(e);
     }
+    // delete - 데이터 다 지우고 싶을 때
+    // try {
+    //     await User.remove({});
+    //     ctx.status = 204;   //no content : 성공했지만 응답할 데이터는 없음
+    // } catch (e) {
+    //     ctx.throw(500, e);
+    // }
 }
-*/
+
 
 export const register = async ctx => {
     //회원가입
