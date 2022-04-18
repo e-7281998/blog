@@ -72,7 +72,7 @@ const AuthForm = ({ type }) => {
                         type="password"
                     />
                 )}
-                <ButtonWithMarginTop cyan fullWidth style={{ marginTop: '1rem' }}>로그인</ButtonWithMarginTop>
+                <ButtonWithMarginTop cyan fullWidth>로그인</ButtonWithMarginTop>
             </form>
             <Footer>
                 {type === 'logtin' ? (
