@@ -75,7 +75,7 @@ const AuthForm = ({ type }) => {
                 <ButtonWithMarginTop cyan fullWidth>로그인</ButtonWithMarginTop>
             </form>
             <Footer>
-                {type === 'logtin' ? (
+                {type === 'login' ? (
                     <Link to="/register">회원가입</Link>
                 ) : (
                     <Link to="/login">로그인</Link>
