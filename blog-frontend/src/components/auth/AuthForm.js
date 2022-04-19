@@ -72,7 +72,7 @@ const AuthForm = ({ type }) => {
                         type="password"
                     />
                 )}
-                <ButtonWithMarginTop cyan fullWidth>로그인</ButtonWithMarginTop>
+                <ButtonWithMarginTop cyan fullWidth>{text}</ButtonWithMarginTop>
             </form>
             <Footer>
                 {type === 'login' ? (
