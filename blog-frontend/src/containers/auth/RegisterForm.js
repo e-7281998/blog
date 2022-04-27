@@ -61,7 +61,7 @@ const RegisterForm = () => {
         if (user) {
             navigate('/')   //홈 화면으로 이동
         }
-    }, [user]);
+    }, [user, navigate]);
 
     return (
         <AuthForm
