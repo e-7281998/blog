@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import palette from '../../lib/styles/palette';
+import { useNavigate } from 'react-router-dom';
 
 const StyledButton = styled.button`
     border:none;
@@ -20,10 +21,10 @@ const StyledButton = styled.button`
     ${props =>
         props.fullWidth &&
         css`
-            padding - top: 0.75rem;
-            padding - bottom: 0 / 75rem;
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
             width: 100%;
-            font - size: 1.125rem;
+            font-size: 1.125rem;
         `
     }
 
@@ -32,11 +33,24 @@ const StyledButton = styled.button`
         css`
             background: ${palette.cyan[5]};
             &:hover {
-            background: ${palette.cyan[4]};
+                background: ${palette.cyan[4]};
+            }
         `
     }
 `;
 
-const Button = props => <StyledButton {...props} />;
+const Button = ({ to, history, ...rest }) => {
+    const navigate = useNavigate();
+    const onClick = e => {
+        //to가 있다면 to페이지로 이동
+        if (to) {
+            navigate(to);
+        }
+        if (rest.onClick) {
+            rest.onClick(e)
+        }
+    }
+    return <StyledButton {...rest} onClick={onClick} />;
+}
 
 export default Button;
